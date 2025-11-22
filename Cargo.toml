@@ -1,16 +1,15 @@
 [package]
-name = "pqc-combo"
-version = "0.1.0"
+name = "pqc-fips"
+version = "0.0.3"
 edition = "2021"
 license = "MIT"
-description = "Pure Rust ML-KEM-1024 + ML-DSA-65 + AES-256-GCM for no_std"
-repository = "https://github.com/AaronSchnacky1/pqc-combo"
-keywords = ["post-quantum", "ml-kem", "ml-dsa", "no_std", "fips"]
-categories = ["cryptography", "no-std"]
+description = "Imported pqc-combo v0.1.0"
+keywords = ["pqc", "fips"]
+categories = ["cryptography"]
 readme = "README.md"
 authors = ["Aaron Schnacky <aaronschnacky@gmail.com>"]
-homepage = "https://www.pqc-combo.com/"
-documentation = "https://github.com/AaronSchnacky1/pqc-combo/blob/main/README.md"
+homepage = "https://www.pqc-fips.com/"
+documentation = "https://github.com/AaronSchnacky1/pqc-fips/blob/main/README.md"
 
 [dependencies]
 # Core dependencies (always required)
