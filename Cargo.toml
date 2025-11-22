@@ -1,9 +1,9 @@
 [package]
 name = "pqc-fips"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 description = "Official pqc-fips library"
 license = "MIT"
 authors = ["Aaron Schnacky <aaronschnacky@gmail.com>"]
-homepage = "https://www.aaronschnacky.com/"
+homepage = "https://www.pqc-fips.com/"
 repository = "https://github.com/aaronschnacky1/pqc-fips"
