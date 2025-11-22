@@ -1,9 +1,79 @@
 [package]
-name = "pqc-fips"
-version = "0.0.2"
+name = "pqc-combo"
+version = "0.1.0"
 edition = "2021"
-description = "Official pqc-fips library"
 license = "MIT"
+description = "Pure Rust ML-KEM-1024 + ML-DSA-65 + AES-256-GCM for no_std"
+repository = "https://github.com/AaronSchnacky1/pqc-combo"
+keywords = ["post-quantum", "ml-kem", "ml-dsa", "no_std", "fips"]
+categories = ["cryptography", "no-std"]
+readme = "README.md"
 authors = ["Aaron Schnacky <aaronschnacky@gmail.com>"]
-homepage = "https://www.pqc-fips.com/"
-repository = "https://github.com/aaronschnacky1/pqc-fips"
+homepage = "https://www.pqc-combo.com/"
+documentation = "https://github.com/AaronSchnacky1/pqc-combo/blob/main/README.md"
+
+[dependencies]
+# Core dependencies (always required)
+zeroize = { version = "1.8", default-features = false, features = ["zeroize_derive"] }
+sha3 = { version = "0.10", default-features = false }
+
+# Optional crypto primitives
+aes-gcm = { version = "0.10", optional = true }
+libcrux-ml-kem = { version = "0.0.4", optional = true, default-features = false }
+libcrux-ml-dsa = { version = "0.0.4", optional = true, default-features = false }
+
+# RNG
+rand = { version = "0.8", optional = true }
+rand_chacha = { version = "0.3", optional = true, default-features = false }
+
+[features]
+default = ["std", "alloc", "ml-kem", "ml-dsa"]
+
+# Environment features
+std = ["rand", "alloc", "sha3/std"]
+alloc = []
+
+# Crypto algorithm features - propagate sub-features to libcrux
+ml-kem = ["dep:libcrux-ml-kem", "libcrux-ml-kem/mlkem1024"]
+ml-dsa = ["dep:libcrux-ml-dsa", "libcrux-ml-dsa/mldsa65"]
+aes-gcm = ["dep:aes-gcm", "alloc"]
+
+# FIPS mode (enables strict CSP controls and KATs)
+fips_140_3 = ["ml-kem", "ml-dsa"]
+
+[dev-dependencies]
+hex = "0.4"
+criterion = "0.5"
+proptest = "1.4"
+sha3 = "0.10"  # For cross-validation hash checks
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+# Integration Tests
+[[test]]
+name = "fips_140_3"
+path = "tests/fips_140_3.rs"
+required-features = ["std"]
+
+[[test]]
+name = "cast_tests"
+path = "tests/cast_tests.rs"
+required-features = ["std"]
+
+[[test]]
+name = "property_tests"
+path = "tests/property_tests.rs"
+required-features = ["std", "ml-kem", "ml-dsa"]
+
+[[test]]
+name = "cross_validation"
+path = "tests/cross_validation.rs"
+required-features = ["std", "ml-kem", "ml-dsa"]
+
+# Benchmarks
+[[bench]]
+name = "benchmarks"
+harness = false
